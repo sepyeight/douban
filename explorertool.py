@@ -93,16 +93,18 @@ def uzipdata(data):
     网页解压缩
     """
     # 解码
+    try:
+        data = gzip.decompress(data)
+    except:
+        pass
+
     chardit = chardet.detect(data)
     if chardit['encoding']:
         charset = chardit['encoding']
     else:
         charset = CHARSET
-    try:
-        html = gzip.decompress(data).decode(charset)
-    except:
-        html = data.decode(charset)
-    return html
+
+    return data.decode(charset)
 
 
 # user_agents = LoadUserAgents(uafile='user_agents.txt')
