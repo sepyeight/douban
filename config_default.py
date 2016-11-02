@@ -3,9 +3,8 @@
 
 
 data = {
-    # 账号
+    # 账号密码
     "form_email": '',
-    # 密码
     "form_password": '',
     "source": "index_nav",
     "remember": "on"
