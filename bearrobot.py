@@ -18,7 +18,7 @@ def resptext(content):
     '''
 
     if content is None:
-        content = '你好呀！'
+        content = '你好呀'
 
     data = {
         # 图灵机器人的key
