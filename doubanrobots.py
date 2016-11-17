@@ -88,14 +88,10 @@ class douban_robot:
         cj = explorertool.cj
         cj.save(ignore_discard=True, ignore_expires=True)  # 保存cookie到cookie.txt中
 
-        for item in cj:
-            print('Name = ' + item.name)
-            print('Value = ' + item.value)
-
     def sofa(self, group_id):
         # 四部，拿到group，group添加responsetext，查看group是否被回复，回复group
         logging.debug('sofa .... ')
-        topicsqueue = queue.Queue(25)
+        topicsqueue = queue.Queue()
         checkqueue = queue.Queue()
         repliesqueue = queue.Queue()
 
@@ -153,7 +149,7 @@ class douban_robot:
             if item is explorertool._sentinel:
                 topicsqueue.put(item)
                 break
-            if item.get_number() == '':
+            if item.get_number() is '':
                 item.set_responsetext(bearrobot.resptext(item.get_title()))
                 checkqueue.put(item)
         checkqueue.put(explorertool._sentinel)
@@ -201,9 +197,11 @@ class douban_robot:
             item = repliesqueue.get()
             if item is explorertool._sentinel:
                 repliesqueue.put(item)
+
                 break
 
-            if item.get_number() == '':
+            if item.get_number() is '':
+               # ck = 1adK & rv_comment = hhh & start = 0 & submit_btn = % E5 % 8A % A0 % E4 % B8 % 8A % E5 % 8E % BB
                 msgdata = {"ck": explorertool.getck(),
                            "rv_comment": item.get_responsetext(),
                            "start": "0",
@@ -216,8 +214,8 @@ class douban_robot:
 
                 # 有时候是网络原因，有时候你发的帖子被系统删掉了，所以我们要try--catch--pass掉
                 try:
-                    explorertool.multi_open(item.get_url() + "/add_comment#last?",
-                                            msgdata, sleeptime=0)
+                    explorertool.multi_open(item.get_url() + '/add_comment', msgdata, sleeptime=0)
+                    logging.info(item.get_url())
                 except urllib.error.URLError as e:
                     pass
 
